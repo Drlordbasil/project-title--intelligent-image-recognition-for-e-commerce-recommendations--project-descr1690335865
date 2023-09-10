@@ -1,3 +1,8 @@
+from sklearn.preprocessing import normalize
+from sklearn.neighbors import NearestNeighbors
+from sklearn.cluster import KMeans
+import numpy as np
+import cv2
 Here are some improvements to the given Python program:
 
 1. Move import statements to the top of the file and group them together for better readability.
@@ -13,11 +18,6 @@ Here are some improvements to the given Python program:
 Here is the improved code:
 
 ```python
-import cv2
-import numpy as np
-from sklearn.cluster import KMeans
-from sklearn.neighbors import NearestNeighbors
-from sklearn.preprocessing import normalize
 
 
 class ImageRecognitionSystem:
@@ -42,8 +42,10 @@ class ImageRecognitionSystem:
             images: Array of training images.
         """
         features = self.extract_features(images)
-        self.kmeans = KMeans(n_clusters=self.num_clusters, random_state=0).fit(features)
-        self.nearest_neighbors = NearestNeighbors(metric="euclidean").fit(features)
+        self.kmeans = KMeans(n_clusters=self.num_clusters,
+                             random_state=0).fit(features)
+        self.nearest_neighbors = NearestNeighbors(
+            metric="euclidean").fit(features)
 
     def recommend(self, image: np.ndarray) -> List[Tuple[float, int]]:
         """
@@ -66,7 +68,8 @@ class ImageRecognitionSystem:
             query_features, n_neighbors=self.num_recommendations, indices=cluster_indices
         )
 
-        recommendations = [(distances[0][i], indices[0][i]) for i in range(len(indices[0]))]
+        recommendations = [(distances[0][i], indices[0][i])
+                           for i in range(len(indices[0]))]
         recommendations = sorted(recommendations, key=lambda x: x[0])
 
         return recommendations
@@ -90,7 +93,8 @@ class ImageRecognitionSystem:
 
 # Example usage
 if __name__ == "__main__":
-    image_recognition = ImageRecognitionSystem(num_clusters=10, num_recommendations=5)
+    image_recognition = ImageRecognitionSystem(
+        num_clusters=10, num_recommendations=5)
 
     # Training phase
     training_images = np.array([...])  # Array of training images
@@ -101,7 +105,8 @@ if __name__ == "__main__":
     recommendations = image_recognition.recommend(test_image)
 
     for i, (distance, index) in enumerate(recommendations):
-        print(f"Recommendation {i + 1}: Distance = {distance}, Index = {index}")
+        print(
+            f"Recommendation {i + 1}: Distance = {distance}, Index = {index}")
 ```
 
 These improvements should help make the code more efficient, readable, and maintainable.
